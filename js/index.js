@@ -341,6 +341,10 @@ function setupPortfolioFilters() {
     return;
   }
 
+  // Tailwind classes for the "active" (colored) look
+  var activeClasses = ["bg-gradient-to-l", "from-primary", "to-secondary", "text-white", "shadow-lg", "shadow-primary/50"];
+  var inactiveClasses = ["bg-white", "dark:bg-slate-800", "text-slate-600", "dark:text-slate-300", "border", "border-slate-300", "dark:border-slate-700"];
+
   var i;
   for (i = 0; i < filterButtons.length; i++) {
     var oneFilterButton = filterButtons[i];
@@ -348,15 +352,17 @@ function setupPortfolioFilters() {
     oneFilterButton.addEventListener("click", function (event) {
       var chosenFilter = event.target.getAttribute("data-filter");
 
-      // STEP 1: make every button look "not active"
+      // STEP 1: reset every button to its normal look
       var b;
       for (b = 0; b < filterButtons.length; b++) {
-        filterButtons[b].classList.remove("active");
+        filterButtons[b].classList.remove("active", ...activeClasses);
+        filterButtons[b].classList.add(...inactiveClasses);
         filterButtons[b].setAttribute("aria-pressed", "false");
       }
 
-      // STEP 2: make only the clicked button look "active"
-      event.target.classList.add("active");
+      // STEP 2: give only the clicked button the colored look
+      event.target.classList.remove(...inactiveClasses);
+      event.target.classList.add("active", ...activeClasses);
       event.target.setAttribute("aria-pressed", "true");
 
       // STEP 3: show only the portfolio items that match the chosen filter
